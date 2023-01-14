@@ -1,0 +1,19 @@
+{
+    "name": "Bounce.Framework",
+    "rootNamespace": "",
+    "references": [
+        "Unity.TextMeshPro",
+        "DOTween.Modules",
+        "OdinSerializer",
+        "Bounce.Framework.Editor"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
