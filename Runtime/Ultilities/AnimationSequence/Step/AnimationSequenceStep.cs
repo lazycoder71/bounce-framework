@@ -6,6 +6,17 @@ namespace Bounce.Framework
     [Serializable]
     public abstract class AnimationSequenceStep
     {
+        [Serializable, Flags]
+        public enum Callback
+        {
+            OnStart = 1 << 1,
+            OnPlay = 1 << 2,
+            OnUpdate = 1 << 3,
+            OnStep = 1 << 4,
+            OnComplete = 1 << 5,
+            OnRewind = 1 << 6,
+        }
+
         [Serializable]
         public enum AddType
         {
