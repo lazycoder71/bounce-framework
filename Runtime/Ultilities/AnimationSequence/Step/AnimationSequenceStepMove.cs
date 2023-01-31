@@ -63,15 +63,17 @@ namespace Bounce.Framework
         private bool _relative;
 
         [HorizontalGroup("AddType"), LabelWidth(75), SuffixLabel("second(s)", true)]
-        [ShowIf("@_addType == AnimationSequenceStep.AddType.Insert")]
+        [ShowIf("@_addType == AnimationSequenceStep.AddType.Insert"), MinValue(0)]
         [SerializeField]
         private float _insertTime;
 
         [SerializeField]
-        private LoopType _loopType;
+        [MinValue(0), HorizontalGroup("Loop")]
+        private int _loopTime;
 
         [SerializeField]
-        private int _loopTime;
+        [ShowIf("@_loopTime > 0"), HorizontalGroup("Loop"), LabelWidth(75)]
+        private LoopType _loopType;
 
         public override string displayName { get { return $"Move - {(_isSelf ? "Transform (This)" : _owner)}"; } }
 
