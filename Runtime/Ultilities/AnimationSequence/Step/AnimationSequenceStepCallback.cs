@@ -7,19 +7,19 @@ namespace Bounce.Framework
 {
     public class AnimationSequenceStepCallback : AnimationSequenceStep
     {
-        [HorizontalGroup]
-        [SerializeField] bool _isInserted;
+        [SerializeField, HorizontalGroup]
+        private bool _isInserted;
 
         [HorizontalGroup]
-        [Min(0f)]
-        [ShowIf("@_isInserted")]
-        [SerializeField] float _insertTime;
+        [SerializeField, Min(0f), ShowIf("@_isInserted")]
+        private float _insertTime;
 
-        [SerializeField] UnityEvent _callback;
+        [SerializeField] 
+        private UnityEvent _callback;
 
         public override string displayName { get { return "Callback"; } }
 
-        public override void AddTweenToSequence(AnimationSequence animationSequence)
+        public override void AddToSequence(AnimationSequence animationSequence)
         {
             if (_isInserted)
                 animationSequence.sequence.InsertCallback(_insertTime, () => { _callback?.Invoke(); });

@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System;
 
 namespace Bounce.Framework
@@ -27,6 +26,6 @@ namespace Bounce.Framework
 
         public abstract string displayName { get; }
 
-        public abstract void AddTweenToSequence(AnimationSequence animationSequence);
+        public abstract void AddToSequence(AnimationSequence animationSequence);
     }
 }

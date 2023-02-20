@@ -169,6 +169,12 @@ namespace Bounce.Framework
         {
             if (_instance == null)
             {
+                if (BFactory.sceneTransitionPrefab == null)
+                {
+                    BDebug.LogWarning("Unassigned scene transition prefab!");
+                    return;
+                }
+
                 _instance = BFactory.sceneTransitionPrefab.Create().GetComponent<SceneLoader>();
                 _instance.Construct();
 
