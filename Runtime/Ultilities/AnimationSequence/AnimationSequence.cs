@@ -13,6 +13,8 @@ namespace Bounce.Framework
         [ListDrawerSettings(ShowIndexLabels = true, OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement")]
         [SerializeReference] List<AnimationSequenceStep> _steps = new List<AnimationSequenceStep>();
 
+        [SerializeField] AnimationSequenceSettings _settings;
+
         Sequence _sequence;
 
         public Sequence sequence { get { return _sequence; } }
@@ -27,8 +29,23 @@ namespace Bounce.Framework
             Construct();
         }
 
-        [Button(Name = "", Icon = SdfIconType.Play, ButtonHeight = 50), PropertyOrder(-1)]
-        public void Preview()
+        [ButtonGroup(Order = -1, ButtonHeight = 25)]
+        [Button(Name = "", Icon = SdfIconType.SkipBackwardFill)]
+        public void Rewind()
+        {
+            _sequence?.Rewind();
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.SkipStartFill)]
+        public void PlayBackward()
+        {
+            _sequence?.PlayBackwards();
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.PlayFill)]
+        public void Play()
         {
             Stop();
 
@@ -38,12 +55,28 @@ namespace Bounce.Framework
             DOTweenEditorPreview.Start();
         }
 
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.SkipEndFill)]
+        public void PlayFoward()
+        {
+            _sequence?.PlayForward();
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.SkipForwardFill)]
+        public void Complete()
+        {
+            _sequence?.Complete();
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.StopFill)]
         private void Stop()
         {
-            _sequence?.Restart();
-            _sequence?.Kill();
-
             DOTweenEditorPreview.Stop(true);
+
+            _sequence?.Kill();
+            _sequence = null;
         }
 
         private void Construct()
