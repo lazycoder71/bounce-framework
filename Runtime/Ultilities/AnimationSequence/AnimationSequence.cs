@@ -10,23 +10,57 @@ namespace Bounce.Framework
     [ExecuteInEditMode]
     public class AnimationSequence : MonoCached
     {
-        [ListDrawerSettings(ShowIndexLabels = true, OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement")]
+        [Title("Steps")]
+        [ListDrawerSettings(ShowIndexLabels = false, OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement")]
         [SerializeReference] List<AnimationSequenceStep> _steps = new List<AnimationSequenceStep>();
 
-        [SerializeField] AnimationSequenceSettings _settings;
+        [Title("Settings")]
+        [SerializeField] bool _isAutoKill = true;
+        [SerializeField] bool _playOnEnable = false;
+        [MinValue(-1), HorizontalGroup("Loop")]
+        [SerializeField] int _loopCount;
+        [ShowIf("@_loopCount<0"), HorizontalGroup("Loop"), LabelWidth(75.0f)]
+        [SerializeField] LoopType _loopType;
 
         Sequence _sequence;
 
+        RectTransform _rectTransform;
+
         public Sequence sequence { get { return _sequence; } }
+
+        public RectTransform rectTransform
+        {
+            get
+            {
+                if (_rectTransform == null)
+                    _rectTransform = GetComponent<RectTransform>();
+
+                return _rectTransform;
+            }
+        }
 
         private void OnDestroy()
         {
             _sequence?.Kill();
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             Construct();
+
+            if (_playOnEnable)
+            {
+                _sequence.Restart();
+                _sequence.Play();
+            }
+        }
+
+        private void OnGUI()
+        {
+            if (UnityEditor.Selection.activeGameObject != this.gameObject)
+            {
+                Stop();
+            }
         }
 
         [ButtonGroup(Order = -1, ButtonHeight = 25)]
@@ -81,6 +115,9 @@ namespace Bounce.Framework
 
         private void Construct()
         {
+            if (_sequence.IsActive())
+                return;
+
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
 
@@ -90,15 +127,19 @@ namespace Bounce.Framework
             }
 
             if (!Application.isPlaying)
-                _sequence.SetAutoKill(false);
-        }
-
-        private void OnGUI()
-        {
-            if (UnityEditor.Selection.activeGameObject != this.gameObject)
             {
-                Stop();
+                _sequence.SetAutoKill(false);
             }
+            else
+            {
+                if (_loopCount != 0)
+                    _sequence.SetLoops(_loopCount, _loopType);
+
+                _sequence.SetAutoKill(_isAutoKill);
+            }
+
+            _sequence.Restart();
+            _sequence.Pause();
         }
 
         private void BeginDrawListElement(int index)

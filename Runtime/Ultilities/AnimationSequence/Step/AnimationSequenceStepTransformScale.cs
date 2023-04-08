@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Bounce.Framework
 {
-    public class AnimationSequenceStepScale : AnimationSequenceStepTransform
+    public class AnimationSequenceStepTransformScale : AnimationSequenceStepTransform
     {
         public override string displayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: Scale To {(_isUseTarget ? (_target == null ? "Null" : _target.name) : _value)}"; } }
 
@@ -13,40 +13,29 @@ namespace Bounce.Framework
 
             Tween tween;
 
+            Vector3 start;
+            Vector3 end;
+
             if (_isUseTarget)
             {
                 float duration = _isSpeedBased ? Vector3.Distance(_target.localScale, owner.localScale) / _duration : _duration;
-                Vector3 start = owner.localScale;
-                Vector3 end = _target.localScale;
+                start = owner.localScale;
+                end = _target.localScale;
 
-                if (_isFrom)
-                {
-                    tween = owner.DOScale(start, duration)
-                                 .ChangeStartValue(end);
-                }
-                else
-                {
-                    tween = owner.DOScale(end, duration)
-                                 .ChangeStartValue(start);
-                }
+                tween = owner.DOScale(end, duration)
+                             .ChangeStartValue(start);
             }
             else
             {
                 float duration = _isSpeedBased ? Vector3.Distance(_value, owner.localScale) / _duration : _duration;
-                Vector3 start = owner.localScale;
-                Vector3 end = _relative ? owner.localScale + _value : _value;
+                start = owner.localScale;
+                end = _relative ? owner.localScale + _value : _value;
 
-                if (_isFrom)
-                {
-                    tween = owner.DOScale(start, duration)
-                                 .ChangeStartValue(end);
-                }
-                else
-                {
-                    tween = owner.DOScale(end, duration)
-                                 .ChangeStartValue(start);
-                }
+                tween = owner.DOScale(end, duration)
+                             .ChangeStartValue(start);
             }
+
+            animationSequence.transformCached.localScale = end;
 
             return tween;
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Bounce.Framework
 {
-    public class AnimationSequenceStepTransform : AnimationSequenceStepAction<Transform>
+    public class AnimationSequenceStepRectTransform : AnimationSequenceStepAction<RectTransform>
     {
         [SerializeField]
         [HorizontalGroup("Target"), ShowIf("@_isUseTarget == false")]

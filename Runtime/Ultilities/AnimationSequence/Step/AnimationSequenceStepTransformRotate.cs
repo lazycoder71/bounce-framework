@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Bounce.Framework
 {
-    public class AnimationSequenceStepRotate : AnimationSequenceStepTransform
+    public class AnimationSequenceStepTransformRotate : AnimationSequenceStepTransform
     {
         [SerializeField]
         private RotateMode _rotateMode = RotateMode.Fast;
@@ -16,40 +16,29 @@ namespace Bounce.Framework
 
             Tween tween;
 
+            Vector3 start;
+            Vector3 end;
+
             if (_isUseTarget)
             {
                 float duration = _isSpeedBased ? Vector3.Angle(_target.localEulerAngles, owner.localEulerAngles) / _duration : _duration;
-                Vector3 start = owner.localEulerAngles;
-                Vector3 end = _target.localEulerAngles;
+                start = owner.localEulerAngles;
+                end = _target.localEulerAngles;
 
-                if (_isFrom)
-                {
-                    tween = owner.DOLocalRotate(start, duration, _rotateMode)
-                                 .ChangeStartValue(end);
-                }
-                else
-                {
-                    tween = owner.DORotate(end, duration, _rotateMode)
-                                 .ChangeStartValue(start);
-                }
+                tween = owner.DOLocalRotate(end, duration, _rotateMode)
+                             .ChangeStartValue(start);
             }
             else
             {
                 float duration = _isSpeedBased ? Vector3.Angle(_value, owner.localEulerAngles) / _duration : _duration;
-                Vector3 start = owner.localEulerAngles;
-                Vector3 end = _relative ? owner.localEulerAngles + _value : _value;
+                start = owner.localEulerAngles;
+                end = _relative ? owner.localEulerAngles + _value : _value;
 
-                if (_isFrom)
-                {
-                    tween = owner.DORotate(start, duration, _rotateMode)
-                                 .ChangeStartValue(end);
-                }
-                else
-                {
-                    tween = owner.DORotate(end, duration, _rotateMode)
-                                 .ChangeStartValue(start);
-                }
+                tween = owner.DOLocalRotate(end, duration, _rotateMode)
+                             .ChangeStartValue(start);
             }
+
+            animationSequence.transformCached.localEulerAngles = end;
 
             return tween;
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Bounce.Framework
 {
-    public class AnimationSequenceStepMove : AnimationSequenceStepTransform
+    public class AnimationSequenceStepTransformMove : AnimationSequenceStepTransform
     {
         [SerializeField]
         private bool _snapping = false;
@@ -16,40 +16,29 @@ namespace Bounce.Framework
 
             Tween tween;
 
+            Vector3 start;
+            Vector3 end;
+
             if (_isUseTarget)
             {
                 float duration = _isSpeedBased ? Vector3.Distance(_target.localPosition, owner.localPosition) / _duration : _duration;
-                Vector3 start = owner.localPosition;
-                Vector3 end = _target.localPosition;
+                start = owner.localPosition;
+                end = _target.localPosition;
 
-                if (_isFrom)
-                {
-                    tween = owner.DOLocalMove(start, duration, _snapping)
-                                 .ChangeStartValue(end);
-                }
-                else
-                {
-                    tween = owner.DOLocalMove(end, duration, _snapping)
-                                 .ChangeStartValue(start);
-                }
+                tween = owner.DOLocalMove(end, duration, _snapping)
+                             .ChangeStartValue(start);
             }
             else
             {
                 float duration = _isSpeedBased ? Vector3.Distance(_value, owner.localPosition) / _duration : _duration;
-                Vector3 start = owner.localPosition;
-                Vector3 end = _relative ? owner.localPosition + _value : _value;
+                start = owner.localPosition;
+                end = _relative ? owner.localPosition + _value : _value;
 
-                if (_isFrom)
-                {
-                    tween = owner.DOLocalMove(start, duration, _snapping)
-                                 .ChangeStartValue(end);
-                }
-                else
-                {
-                    tween = owner.DOLocalMove(end, duration, _snapping)
-                                 .ChangeStartValue(start);
-                }
+                tween = owner.DOLocalMove(end, duration, _snapping)
+                             .ChangeStartValue(start);
             }
+
+            animationSequence.transformCached.localPosition = end;
 
             return tween;
         }
