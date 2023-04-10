@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 using Sirenix.Utilities.Editor;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Bounce.Framework
 {
@@ -25,8 +26,7 @@ namespace Bounce.Framework
         Sequence _sequence;
 
         RectTransform _rectTransform;
-
-        public Sequence sequence { get { return _sequence; } }
+        Graphic _graphic;
 
         public RectTransform rectTransform
         {
@@ -38,6 +38,19 @@ namespace Bounce.Framework
                 return _rectTransform;
             }
         }
+
+        public Graphic graphic
+        {
+            get
+            {
+                if (_graphic == null)
+                    _graphic = GetComponent<Graphic>();
+
+                return _graphic;
+            }
+        }
+
+        public Sequence sequence { get { return _sequence; } }
 
         private void OnDestroy()
         {
@@ -121,25 +134,13 @@ namespace Bounce.Framework
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
 
+            _sequence.SetLoops(_loopCount, _loopType);
+            _sequence.SetAutoKill(Application.isPlaying ? _isAutoKill : false);
+
             for (int i = 0; i < _steps.Count; i++)
             {
                 _steps[i].AddToSequence(this);
             }
-
-            if (!Application.isPlaying)
-            {
-                _sequence.SetAutoKill(false);
-            }
-            else
-            {
-                if (_loopCount != 0)
-                    _sequence.SetLoops(_loopCount, _loopType);
-
-                _sequence.SetAutoKill(_isAutoKill);
-            }
-
-            _sequence.Restart();
-            _sequence.Pause();
         }
 
         private void BeginDrawListElement(int index)

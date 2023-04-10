@@ -2,12 +2,12 @@
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
-namespace Bounce.Framework
+namespace PFramework.Runtime
 {
-    public class UIGraphicsScale : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerUpHandler, IPointerExitHandler, IPointerClickHandler
+    public class UIGraphicScale : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerUpHandler, IPointerExitHandler, IPointerClickHandler
     {
         [Header("Reference")]
-        [SerializeField] Transform _target;
+        [SerializeField] Transform _tfTarget;
 
         [Header("Config")]
         [SerializeField] Vector2 _scaleValue = new Vector2(1f, 0.9f);
@@ -21,15 +21,16 @@ namespace Bounce.Framework
 
         void Awake()
         {
-            if (_target == null)
-                _target = transform;
-
-            _target.SetScaleXY(_scaleValue.x);
-
-            InitTween();
+            if (_tfTarget == null)
+                _tfTarget = transform;
         }
 
         void OnDestroy()
+        {
+            _tween?.Kill();
+        }
+
+        private void OnDisable()
         {
             _tween?.Kill();
         }
@@ -40,11 +41,17 @@ namespace Bounce.Framework
 
         void InitTween()
         {
+            if (_tween != null)
+                return;
+
+            Debug.Log($"Init tween {gameObject.name}");
+
             float duration = Mathf.Abs(_scaleValue.x - _scaleValue.y) / _scaleSpeed;
 
-            _tween = _target.DOScale(_scaleValue.y, duration)
-                .SetAutoKill(false)
-                .SetUpdate(true);
+            _tween = _tfTarget.DOScale(_scaleValue.y, duration)
+                              .ChangeStartValue(Vector3.one * _scaleValue.x)
+                              .SetAutoKill(false)
+                              .SetUpdate(true);
 
             _tween.Restart();
             _tween.Pause();
@@ -52,11 +59,15 @@ namespace Bounce.Framework
 
         void ScaleUp()
         {
+            InitTween();
+
             _tween.PlayForward();
         }
 
         void ScaleDown()
         {
+            InitTween();
+
             _tween.PlayBackwards();
         }
 

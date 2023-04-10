@@ -61,8 +61,6 @@ namespace Bounce.Framework
         [SerializeField, ShowIf("@_isUseTarget == false")]
         protected bool _relative;
 
-        Tween _tween;
-
         public override string displayName { get { return "ERROR!!!"; } }
 
         public override void AddToSequence(AnimationSequence animationSequence)
@@ -83,23 +81,22 @@ namespace Bounce.Framework
                 }
             }
 
-            _tween?.Kill();
-            _tween = GetTween(animationSequence);
+            Tween tween = GetTween(animationSequence);
 
-            _tween.SetEase(_ease);
-            _tween.SetUpdate(_updateType, _isIndependentUpdate);
-            _tween.SetLoops(_loopTime, _loopType);
+            tween.SetEase(_ease);
+            tween.SetUpdate(_updateType, _isIndependentUpdate);
+            tween.SetLoops(_loopTime, _loopType);
 
             switch (_addType)
             {
                 case AddType.Append:
-                    animationSequence.sequence.Append(_tween);
+                    animationSequence.sequence.Append(tween);
                     break;
                 case AddType.Join:
-                    animationSequence.sequence.Join(_tween);
+                    animationSequence.sequence.Join(tween);
                     break;
                 case AddType.Insert:
-                    animationSequence.sequence.Insert(_insertTime, _tween);
+                    animationSequence.sequence.Insert(_insertTime, tween);
                     break;
             }
         }
