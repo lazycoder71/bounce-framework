@@ -171,7 +171,7 @@ namespace Bounce.Framework
             {
                 if (BFactory.sceneTransitionPrefab == null)
                 {
-                    BDebug.LogWarning("Unassigned scene transition prefab!");
+                    BDebug.LogWarning($"Unassigned {typeof(SceneLoader)} prefab!");
                     return;
                 }
 

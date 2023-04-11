@@ -24,7 +24,7 @@ namespace Bounce.Framework
 
         public static AudioScript Play(AudioConfig config, Vector3 pos, bool loop = false)
         {
-            if (config.Clip == null)
+            if (config.clip == null)
                 return null;
 
             AudioScript audio = instance._pool.Get();

@@ -10,10 +10,21 @@ namespace Bounce.Framework.Editor
     /// </summary>
     public class ScriptableObjectFactory
     {
-        [MenuItem("Assets/Create/ScriptableObject", false, 0)]
-        public static void Create()
+        [MenuItem("Assets/Create/Scriptable Object - Assembly-CSharp", false, 0)]
+        public static void CreateAssemblyCSharp()
         {
-            var assembly = GetAssembly();
+            Create("Assembly-CSharp");
+        }
+
+        [MenuItem("Assets/Create/Scriptable Object - Bounce.Framework", false, 0)]
+        public static void CreateBounceFramework()
+        {
+            Create("Bounce.Framework");
+        }
+
+        public static void Create(string assemblyName)
+        {
+            var assembly = GetAssembly(assemblyName);
 
             // Get all classes derived from ScriptableObject
             var allScriptableObjects = (from t in assembly.GetTypes()
@@ -30,9 +41,9 @@ namespace Bounce.Framework.Editor
         /// <summary>
         /// Returns the assembly that contains the script code for this project (currently hard coded)
         /// </summary>
-        private static Assembly GetAssembly()
+        private static Assembly GetAssembly(string name)
         {
-            return Assembly.Load(new AssemblyName("Assembly-CSharp"));
+            return Assembly.Load(new AssemblyName(name));
         }
     }
 }

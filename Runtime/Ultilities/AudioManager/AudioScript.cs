@@ -48,14 +48,14 @@ namespace Bounce.Framework
             _tween?.Kill();
 
             if (!loop)
-                _tween = DOVirtual.DelayedCall(config.Clip.length, Stop);
+                _tween = DOVirtual.DelayedCall(config.clip.length, Stop);
         }
 
         public void PlayFadeIn(AudioConfig config, float fadeDuration, bool loop = false)
         {
             Construct(config, loop);
 
-            fadeDuration = Mathf.Min(fadeDuration, config.Clip.length);
+            fadeDuration = Mathf.Min(fadeDuration, config.clip.length);
 
             _tween?.Kill();
             _tween = audioSource.DOFade(GetVolume(), fadeDuration)
@@ -66,7 +66,7 @@ namespace Bounce.Framework
                    _tween?.Kill();
 
                    if (!loop)
-                       _tween = DOVirtual.DelayedCall(config.Clip.length - fadeDuration, Stop);
+                       _tween = DOVirtual.DelayedCall(config.clip.length - fadeDuration, Stop);
                });
         }
 
@@ -95,7 +95,7 @@ namespace Bounce.Framework
 
         float GetVolume()
         {
-            return _config.VolumeScale * (_config.Type == AudioType.Music ? AudioManager.volumeMusic.value : AudioManager.volumeSound.value);
+            return _config.volumeScale * (_config.type == AudioType.Music ? AudioManager.volumeMusic.value : AudioManager.volumeSound.value);
         }
 
         void VolumeSound_EventValueChanged(float volume)
@@ -112,11 +112,11 @@ namespace Bounce.Framework
         {
             _config = config;
 
-            audioSource.clip = config.Clip;
+            audioSource.clip = config.clip;
             audioSource.loop = loop;
-            audioSource.minDistance = config.Distance.x;
-            audioSource.maxDistance = config.Distance.y;
-            audioSource.spatialBlend = config.Is3D ? 1f : 0f;
+            audioSource.minDistance = config.distance.x;
+            audioSource.maxDistance = config.distance.y;
+            audioSource.spatialBlend = config.is3D ? 1f : 0f;
 
             UpdateVolume();
 
