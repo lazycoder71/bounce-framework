@@ -7,11 +7,9 @@ namespace Bounce.Framework
         public static void RemoveComponent<T>(this GameObject gameObject) where T : Object
         {
             T component = gameObject.GetComponent<T>();
-
+			
             if (component != null)
-            {
-                Object.Destroy(component);
-            }
+                MonoBehaviour.Destroy(component);
         }
 
         public static void DestroyChildren(this GameObject gameObject)
@@ -65,6 +63,7 @@ namespace Bounce.Framework
             var bounds = new Bounds(Vector3.zero, Vector3.zero);
             var childrenRenderer = obj.GetComponentsInChildren<Renderer>();
 
+
             var rnd = obj.GetComponent<Renderer>();
             if (rnd != null)
             {
@@ -73,7 +72,7 @@ namespace Bounce.Framework
             }
 
             foreach (var child in childrenRenderer)
-            {
+			{
                 if (!hasBounds)
                 {
                     bounds = child.bounds;
@@ -83,7 +82,7 @@ namespace Bounce.Framework
                 {
                     bounds.Encapsulate(child.bounds);
                 }
-            }
+			}
 
             return bounds;
         }
@@ -141,7 +140,7 @@ namespace Bounce.Framework
         public static GameObject CreateRelativeLocal(this GameObject gameObject, Transform parent)
         {
             GameObject obj = Object.Instantiate(gameObject, parent);
-            obj.transform.localPosition = gameObject.transform.position;
+            obj.transform.localPosition = gameObject.transform.localPosition;
             obj.transform.localScale = gameObject.transform.localScale;
             return obj;
         }

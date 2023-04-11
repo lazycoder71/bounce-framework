@@ -12,7 +12,7 @@ namespace Bounce.Framework
 
         Tween _tween;
 
-        public event Action OnDestruct;
+        public event Action eventDestruct;
 
         #region MonoBehaviour
 
@@ -36,12 +36,12 @@ namespace Bounce.Framework
 
         void Destruct()
         {
-            OnDestruct?.Invoke();
-
             if (_deactiveOnly)
                 gameObjectCached.SetActive(false);
             else
                 Destroy(gameObjectCached);
+
+            eventDestruct?.Invoke();
         }
     }
 }

@@ -40,7 +40,8 @@ namespace Bounce.Framework
         /// <param name="routine">The <see cref="IEnumerator"/> routine you would like to stop.</param>
         public static void Stop(IEnumerator routine)
         {
-            GlobalCoroutine.instance.StopCoroutine(routine);
+            if (!GlobalCoroutine.isDestroyed)
+                GlobalCoroutine.instance.StopCoroutine(routine);
         }
 
         /// <summary>
