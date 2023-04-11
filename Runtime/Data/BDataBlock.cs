@@ -2,7 +2,7 @@
 
 namespace Bounce.Framework
 {
-    public class DataBlock<T> where T : DataBlock<T>
+    public class BDataBlock<T> where T : BDataBlock<T>
     {
         static T s_instance;
 
@@ -12,7 +12,7 @@ namespace Bounce.Framework
             {
                 if (s_instance == null)
                 {
-                    s_instance = DataHelper.Load<T>(typeof(T).ToString());
+                    s_instance = BDataHelper.Load<T>(typeof(T).ToString());
                     if (s_instance == null)
                         s_instance = (T)Activator.CreateInstance(typeof(T));
 
@@ -42,14 +42,14 @@ namespace Bounce.Framework
 
         public static void Save()
         {
-            DataHelper.Save(instance, typeof(T).ToString());
+            BDataHelper.Save(instance, typeof(T).ToString());
         }
 
         public static void Delete()
         {
             s_instance = null;
 
-            DataHelper.Delete(typeof(T).ToString());
+            BDataHelper.Delete(typeof(T).ToString());
         }
     }
 }

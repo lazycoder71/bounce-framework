@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Bounce.Framework
 {
-    public static class DataHelper
+    public static class BDataHelper
     {
         static readonly string s_rootFolder = "Bounce.Framework";
 

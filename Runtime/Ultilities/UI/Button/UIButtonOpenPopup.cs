@@ -13,16 +13,23 @@ namespace Bounce.Framework
         {
             base.Button_OnClick();
 
-            UIPopupBehaviour popup = UIPopupHelper.Create(_popup);
-
-            eventSpawnPopup?.Invoke(popup);
-
-            HandleSpawnPopup(popup);
+            SpawnPopup();
         }
 
         protected virtual void HandleSpawnPopup(UIPopupBehaviour popupBehaviour)
         {
 
+        }
+
+        public UIPopupBehaviour SpawnPopup()
+        {
+            UIPopupBehaviour popup = UIPopupHelper.Create(_popup);
+
+            eventSpawnPopup?.Invoke(popup);
+
+            HandleSpawnPopup(popup);
+
+            return popup;
         }
     }
 }
