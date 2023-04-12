@@ -1,10 +1,13 @@
-﻿using DG.DOTweenEditor;
-using DG.Tweening;
+﻿using DG.Tweening;
 using Sirenix.OdinInspector;
-using Sirenix.Utilities.Editor;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+#if UNITY_EDITOR
+using Sirenix.Utilities.Editor;
+using DG.DOTweenEditor;
+#endif
 
 namespace Bounce.Framework
 {
@@ -68,6 +71,7 @@ namespace Bounce.Framework
             }
         }
 
+#if UNITY_EDITOR
         private void OnGUI()
         {
             if (UnityEditor.Selection.activeGameObject != this.gameObject)
@@ -75,56 +79,7 @@ namespace Bounce.Framework
                 Stop();
             }
         }
-
-        [ButtonGroup(Order = -1, ButtonHeight = 25)]
-        [Button(Name = "", Icon = SdfIconType.SkipBackwardFill)]
-        public void Rewind()
-        {
-            _sequence?.Rewind();
-        }
-
-        [ButtonGroup]
-        [Button(Name = "", Icon = SdfIconType.SkipStartFill)]
-        public void PlayBackward()
-        {
-            _sequence?.PlayBackwards();
-        }
-
-        [ButtonGroup]
-        [Button(Name = "", Icon = SdfIconType.PlayFill)]
-        public void Play()
-        {
-            Stop();
-
-            Construct();
-
-            DOTweenEditorPreview.PrepareTweenForPreview(_sequence);
-            DOTweenEditorPreview.Start();
-        }
-
-        [ButtonGroup]
-        [Button(Name = "", Icon = SdfIconType.SkipEndFill)]
-        public void PlayFoward()
-        {
-            _sequence?.PlayForward();
-        }
-
-        [ButtonGroup]
-        [Button(Name = "", Icon = SdfIconType.SkipForwardFill)]
-        public void Complete()
-        {
-            _sequence?.Complete();
-        }
-
-        [ButtonGroup]
-        [Button(Name = "", Icon = SdfIconType.StopFill)]
-        private void Stop()
-        {
-            DOTweenEditorPreview.Stop(true);
-
-            _sequence?.Kill();
-            _sequence = null;
-        }
+#endif
 
         private void Construct()
         {
@@ -143,6 +98,58 @@ namespace Bounce.Framework
             }
         }
 
+#if UNITY_EDITOR
+
+        [ButtonGroup(Order = -1, ButtonHeight = 25)]
+        [Button(Name = "", Icon = SdfIconType.SkipBackwardFill)]
+        private void Rewind()
+        {
+            _sequence?.Rewind();
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.SkipStartFill)]
+        private void PlayBackward()
+        {
+            _sequence?.PlayBackwards();
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.PlayFill)]
+        private void Play()
+        {
+            Stop();
+
+            Construct();
+
+            DOTweenEditorPreview.PrepareTweenForPreview(_sequence);
+            DOTweenEditorPreview.Start();
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.SkipEndFill)]
+        private void PlayFoward()
+        {
+            _sequence?.PlayForward();
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.SkipForwardFill)]
+        private void Complete()
+        {
+            _sequence?.Complete();
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.StopFill)]
+        private void Stop()
+        {
+            DOTweenEditorPreview.Stop(true);
+
+            _sequence?.Kill();
+            _sequence = null;
+        }
+
         private void BeginDrawListElement(int index)
         {
             SirenixEditorGUI.BeginBox(_steps[index].displayName);
@@ -152,5 +159,6 @@ namespace Bounce.Framework
         {
             SirenixEditorGUI.EndBox();
         }
+#endif
     }
 }
