@@ -44,8 +44,6 @@ namespace PFramework.Runtime
             if (_tween != null)
                 return;
 
-            Debug.Log($"Init tween {gameObject.name}");
-
             float duration = Mathf.Abs(_scaleValue.x - _scaleValue.y) / _scaleSpeed;
 
             _tween = _tfTarget.DOScale(_scaleValue.y, duration)
