@@ -33,6 +33,7 @@ namespace PFramework.Runtime
         private void OnDisable()
         {
             _tween?.Kill();
+            _tween = null;
         }
 
         #endregion
