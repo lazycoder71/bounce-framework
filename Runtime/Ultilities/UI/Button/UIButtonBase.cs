@@ -25,7 +25,7 @@ namespace Bounce.Framework
             button.onClick.AddListener(Button_OnClick);
         }
 
-        protected virtual void Button_OnClick()
+        public virtual void Button_OnClick()
         {
         }
     }

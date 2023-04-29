@@ -9,7 +9,7 @@ namespace Bounce.Framework
 
         public event Action<UIPopupBehaviour> eventSpawnPopup;
 
-        protected override void Button_OnClick()
+        public override void Button_OnClick()
         {
             base.Button_OnClick();
 

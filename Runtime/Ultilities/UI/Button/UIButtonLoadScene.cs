@@ -7,7 +7,7 @@ namespace Bounce.Framework
         [Header("Config")]
         [SerializeField] int _sceneIndex;
 
-        protected override void Button_OnClick()
+        public override void Button_OnClick()
         {
             base.Button_OnClick();
 

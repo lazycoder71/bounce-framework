@@ -6,7 +6,7 @@ namespace Bounce.Framework
     {
         [SerializeField] string _strURL;
 
-        protected override void Button_OnClick()
+        public override void Button_OnClick()
         {
             base.Button_OnClick();
 

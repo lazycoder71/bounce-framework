@@ -4,7 +4,7 @@ namespace Bounce.Framework
 {
     public class UIButtonReloadScene : UIButtonBase
     {
-        protected override void Button_OnClick()
+        public override void Button_OnClick()
         {
             base.Button_OnClick();
 
