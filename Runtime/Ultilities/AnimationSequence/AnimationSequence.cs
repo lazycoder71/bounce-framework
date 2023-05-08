@@ -1,13 +1,9 @@
-﻿using DG.Tweening;
+﻿using Bounce.Framework.Editor;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-#if UNITY_EDITOR
-using Sirenix.Utilities.Editor;
-using DG.DOTweenEditor;
-#endif
 
 namespace Bounce.Framework
 {
@@ -71,16 +67,6 @@ namespace Bounce.Framework
             }
         }
 
-#if UNITY_EDITOR
-        private void OnGUI()
-        {
-            if (UnityEditor.Selection.activeGameObject != this.gameObject)
-            {
-                Stop();
-            }
-        }
-#endif
-
         private void Construct()
         {
             if (_sequence.IsActive())
@@ -89,13 +75,15 @@ namespace Bounce.Framework
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
 
-            _sequence.SetLoops(_loopCount, _loopType);
-            _sequence.SetAutoKill(Application.isPlaying ? _isAutoKill : false);
-
             for (int i = 0; i < _steps.Count; i++)
             {
                 _steps[i].AddToSequence(this);
             }
+
+            _sequence.SetLoops(_loopCount, _loopType);
+            _sequence.SetAutoKill(_isAutoKill);
+
+            _sequence.Play();
         }
 
 #if UNITY_EDITOR
@@ -122,8 +110,7 @@ namespace Bounce.Framework
 
             Construct();
 
-            DOTweenEditorPreview.PrepareTweenForPreview(_sequence);
-            DOTweenEditorPreview.Start();
+            AnimationSequenceEditor.Play(_sequence);
         }
 
         [ButtonGroup]
@@ -144,7 +131,7 @@ namespace Bounce.Framework
         [Button(Name = "", Icon = SdfIconType.StopFill)]
         private void Stop()
         {
-            DOTweenEditorPreview.Stop(true);
+            Editor.AnimationSequenceEditor.Stop();
 
             _sequence?.Kill();
             _sequence = null;
@@ -152,13 +139,14 @@ namespace Bounce.Framework
 
         private void BeginDrawListElement(int index)
         {
-            SirenixEditorGUI.BeginBox(_steps[index].displayName);
+            Sirenix.Utilities.Editor.SirenixEditorGUI.BeginBox(_steps[index].displayName);
         }
 
         private void EndDrawListElement(int index)
         {
-            SirenixEditorGUI.EndBox();
+            Sirenix.Utilities.Editor.SirenixEditorGUI.EndBox();
         }
+
 #endif
     }
 }

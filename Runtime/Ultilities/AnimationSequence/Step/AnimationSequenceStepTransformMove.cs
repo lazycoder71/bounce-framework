@@ -27,6 +27,8 @@ namespace Bounce.Framework
 
                 tween = owner.DOLocalMove(end, duration, _snapping)
                              .ChangeStartValue(start);
+
+                tween.SetTarget(owner);
             }
             else
             {
@@ -36,6 +38,8 @@ namespace Bounce.Framework
 
                 tween = owner.DOLocalMove(end, duration, _snapping)
                              .ChangeStartValue(start);
+
+                tween.SetTarget(owner);
             }
 
             animationSequence.transformCached.localPosition = end;
