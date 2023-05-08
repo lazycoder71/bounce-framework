@@ -1,28 +1,32 @@
 ﻿using UnityEngine;
 using System;
-using UnityEditor;
+using System.Diagnostics;
 
-namespace Bounce.Framework.Editor
+namespace Bounce.Framework
 {
-    public static class PGizmos
+    public static class BGizmos
     {
         #region Public
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawRectXY(Vector3 center, Vector2 size, Color? color = null)
         {
             Draw(color, () => { DrawRectXY(center, size); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawRectXZ(Vector3 center, Vector2 size, Color? color = null)
         {
             Draw(color, () => { DrawRectXZ(center, size); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawArc(Vector2 center, float startAngle, float endAngle, Color? color = null, int numPoint = 10, float radius = 1f)
         {
             Draw(color, () => { DrawArc(center, startAngle, endAngle, numPoint, radius); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawWireArc(Vector3 center, Vector3 normal, Vector3 from, float angle, float radius, Color? color = null)
         {
             Draw(color, () => { DrawLine(center, center + (from * radius)); });
@@ -30,46 +34,55 @@ namespace Bounce.Framework.Editor
             Draw(color, () => { DrawLine(center, center + (Quaternion.AngleAxis(angle, normal) * from) * radius); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawSolidArc(Vector3 center, Vector3 normal, Vector3 from, float angle, float radius, Color? color = null)
         {
             DrawHandles(color, () => { DrawSolidArc(center, normal, from, angle, radius); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawLine(Vector3 start, Vector3 end, Color? color = null)
         {
             Draw(color, () => { Gizmos.DrawLine(start, end); });
         }
 
-        public static void DrawCircleXY(Vector3 center, float radius, Color? color = null, float angleStep = 10f)
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public static void DrawCircleXY(Vector3 center, float radius, Color? color = null, float? angleStep = null)
         {
-            Draw(color, () => { DrawCircle(center, radius, angleStep); });
+            Draw(color, () => { DrawCircleXY(center, radius, angleStep.GetValueOrDefault(10.0f)); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawCircleXZ(Vector3 center, float radius, Color? color = null, float? angleStep = null)
         {
             Draw(color, () => { DrawCircleXZ(center, radius, angleStep.GetValueOrDefault(10f)); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawWireSphere(Vector3 center, float radius, Color? color = null)
         {
             Draw(color, () => { Gizmos.DrawWireSphere(center, radius); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawSphere(Vector3 center, float radius, Color? color = null)
         {
             Draw(color, () => { Gizmos.DrawSphere(center, radius); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawRay(Vector3 from, Vector3 direction, Color? color = null)
         {
             Draw(color, () => { Gizmos.DrawRay(from, direction); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawWireCube(Vector3 center, Vector3 size, Color? color = null)
         {
             Draw(color, () => { Gizmos.DrawWireCube(center, size); });
         }
 
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void DrawFOV(Vector3 center, Vector3 direction, float fov, Color? color = null, float? length = null)
         {
             Draw(color, () => { DrawFOV(center, direction, fov, length.GetValueOrDefault(10.0f)); });
@@ -95,18 +108,20 @@ namespace Bounce.Framework.Editor
 
         static void DrawHandles(Color? color, Action callback)
         {
+#if UNITY_EDITOR
             if (color.HasValue)
             {
-                Color handlesColor = Handles.color;
+                Color handlesColor = UnityEditor.Handles.color;
 
-                Handles.color = color.Value;
+                UnityEditor.Handles.color = color.Value;
                 callback();
-                Handles.color = handlesColor;
+                UnityEditor.Handles.color = handlesColor;
             }
             else
             {
                 callback();
             }
+#endif
         }
 
         static void DrawRectXY(Vector3 pos, Vector2 size)
@@ -159,15 +174,19 @@ namespace Bounce.Framework.Editor
 
         static void DrawSolidArc(Vector3 center, Vector3 normal, Vector3 from, float angle, float radius)
         {
-            Handles.DrawSolidArc(center, normal, from, angle, radius);
+#if UNITY_EDITOR
+            UnityEditor.Handles.DrawSolidArc(center, normal, from, angle, radius);
+#endif
         }
 
         static void DrawWireArc(Vector3 center, Vector3 normal, Vector3 from, float angle, float radius)
         {
-            Handles.DrawWireArc(center, normal, from, angle, radius);
+#if UNITY_EDITOR
+            UnityEditor.Handles.DrawWireArc(center, normal, from, angle, radius);
+#endif
         }
 
-        static void DrawCircle(Vector3 center, float radius, float angleStep = 10f)
+        static void DrawCircleXY(Vector3 center, float radius, float angleStep = 10f)
         {
             angleStep *= Mathf.Deg2Rad;
 
