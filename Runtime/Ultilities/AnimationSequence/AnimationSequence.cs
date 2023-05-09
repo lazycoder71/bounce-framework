@@ -1,5 +1,4 @@
-﻿using Bounce.Framework.Editor;
-using DG.Tweening;
+﻿using DG.Tweening;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
@@ -110,7 +109,7 @@ namespace Bounce.Framework
 
             Construct();
 
-            AnimationSequenceEditor.Play(_sequence);
+            Editor.AnimationSequenceEditor.Play(_sequence);
         }
 
         [ButtonGroup]
