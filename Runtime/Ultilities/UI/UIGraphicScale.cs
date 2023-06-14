@@ -15,6 +15,7 @@ namespace PFramework.Runtime
         [SerializeField] float _scaleSpeed = 1f;
 
         bool _isDown = false;
+
         Tween _tween;
 
         #region Monobehaviour
@@ -32,6 +33,7 @@ namespace PFramework.Runtime
 
         private void OnDisable()
         {
+            _tween?.Restart();
             _tween?.Kill();
             _tween = null;
         }
