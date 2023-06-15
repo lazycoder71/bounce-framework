@@ -15,6 +15,7 @@ namespace Bounce.Framework
 
             // Check if root folder exist
             string directoryPath = Path.Combine(Application.persistentDataPath, s_rootFolder);
+
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
 
@@ -26,6 +27,7 @@ namespace Bounce.Framework
             try
             {
                 string path = Path.Combine(Application.persistentDataPath, s_rootFolder, filePath);
+
                 if (!File.Exists(path))
                     return null;
 
@@ -58,6 +60,7 @@ namespace Bounce.Framework
             PlayerPrefs.DeleteAll();
 
             string path = Path.Combine(Application.persistentDataPath, s_rootFolder);
+
             var info = new DirectoryInfo(path);
 
             if (!info.Exists)

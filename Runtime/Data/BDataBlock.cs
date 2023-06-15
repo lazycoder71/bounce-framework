@@ -29,6 +29,16 @@ namespace Bounce.Framework
             MonoCallback.instance.eventApplicationQuit += MonoCallback_ApplicationOnQuit;
         }
 
+        protected virtual void OnSaved()
+        {
+
+        }
+
+        protected virtual void OnDeleted()
+        {
+
+        }
+
         void MonoCallback_ApplicationOnQuit()
         {
             Save();
@@ -42,11 +52,15 @@ namespace Bounce.Framework
 
         public static void Save()
         {
+            instance.OnSaved();
+
             BDataHelper.Save(instance, typeof(T).ToString());
         }
 
         public static void Delete()
         {
+            instance.OnDeleted();
+
             s_instance = null;
 
             BDataHelper.Delete(typeof(T).ToString());
