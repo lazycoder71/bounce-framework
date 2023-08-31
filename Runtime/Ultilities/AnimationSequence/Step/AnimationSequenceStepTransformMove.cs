@@ -42,7 +42,7 @@ namespace Bounce.Framework
                 tween.SetTarget(owner);
             }
 
-            animationSequence.transformCached.localPosition = end;
+            owner.localPosition = end;
 
             return tween;
         }

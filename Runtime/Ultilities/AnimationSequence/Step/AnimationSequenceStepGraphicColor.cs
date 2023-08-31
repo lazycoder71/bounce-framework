@@ -42,7 +42,7 @@ namespace Bounce.Framework
                              .ChangeStartValue(start);
             }
 
-            animationSequence.graphic.color = end;
+            owner.color = end;
 
             return tween;
         }

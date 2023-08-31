@@ -38,7 +38,7 @@ namespace Bounce.Framework
                              .ChangeStartValue(start);
             }
 
-            animationSequence.transformCached.localEulerAngles = end;
+            owner.localEulerAngles = end;
 
             return tween;
         }

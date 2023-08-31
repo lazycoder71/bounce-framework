@@ -38,7 +38,7 @@ namespace Bounce.Framework
                              .ChangeStartValue(start);
             }
 
-            animationSequence.rectTransform.anchoredPosition = end;
+            owner.anchoredPosition = end;
 
             return tween;
         }

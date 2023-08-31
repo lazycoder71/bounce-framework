@@ -35,7 +35,7 @@ namespace Bounce.Framework
                              .ChangeStartValue(start);
             }
 
-            animationSequence.transformCached.localScale = end;
+            owner.localScale = end;
 
             return tween;
         }
