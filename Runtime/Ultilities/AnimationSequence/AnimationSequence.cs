@@ -15,11 +15,21 @@ namespace Bounce.Framework
 
         [Title("Settings")]
         [SerializeField] bool _isAutoKill = true;
+
         [SerializeField] bool _playOnEnable = false;
+
         [MinValue(-1), HorizontalGroup("Loop")]
         [SerializeField] int _loopCount;
         [ShowIf("@_loopCount<0"), HorizontalGroup("Loop"), LabelWidth(75.0f)]
         [SerializeField] LoopType _loopType;
+
+        [SerializeField, HorizontalGroup("Update")]
+        [InlineButton("@_isIndependentUpdate = true", Label = "Timescale Based", ShowIf = ("@_isIndependentUpdate == false"))]
+        [InlineButton("@_isIndependentUpdate = false", Label = "Independent Update", ShowIf = ("@_isIndependentUpdate == true"))]
+        protected UpdateType _updateType = UpdateType.Normal;
+
+        [SerializeField, HideInInspector]
+        protected bool _isIndependentUpdate = false;
 
         Sequence _sequence;
 
@@ -81,6 +91,7 @@ namespace Bounce.Framework
 
             _sequence.SetLoops(_loopCount, _loopType);
             _sequence.SetAutoKill(_isAutoKill);
+            _sequence.SetUpdate(_updateType, _isIndependentUpdate);
 
             _sequence.Play();
         }
