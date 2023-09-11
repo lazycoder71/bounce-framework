@@ -96,22 +96,6 @@ namespace Bounce.Framework
             _sequence.Play();
         }
 
-#if UNITY_EDITOR
-
-        [ButtonGroup(Order = -1, ButtonHeight = 25)]
-        [Button(Name = "", Icon = SdfIconType.SkipBackwardFill)]
-        private void Rewind()
-        {
-            _sequence?.Rewind();
-        }
-
-        [ButtonGroup]
-        [Button(Name = "", Icon = SdfIconType.SkipStartFill)]
-        private void PlayBackward()
-        {
-            _sequence?.PlayBackwards();
-        }
-
         [ButtonGroup]
         [Button(Name = "", Icon = SdfIconType.PlayFill)]
         private void Play()
@@ -120,14 +104,32 @@ namespace Bounce.Framework
 
             Construct();
 
+#if UNITY_EDITOR
             Editor.AnimationSequenceEditor.Play(_sequence);
+#endif
+        }
+
+        [ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.SkipStartFill)]
+        public void PlayBackward()
+        {
+            _sequence?.PlayBackwards();
         }
 
         [ButtonGroup]
         [Button(Name = "", Icon = SdfIconType.SkipEndFill)]
-        private void PlayFoward()
+        public void PlayFoward()
         {
             _sequence?.PlayForward();
+        }
+
+#if UNITY_EDITOR
+
+        [ButtonGroup(Order = -1, ButtonHeight = 25)]
+        [Button(Name = "", Icon = SdfIconType.SkipBackwardFill)]
+        private void Rewind()
+        {
+            _sequence?.Rewind();
         }
 
         [ButtonGroup]
