@@ -122,6 +122,18 @@ namespace Bounce.Framework
         {
             _sequence?.PlayForward();
         }
+		
+		[ButtonGroup]
+        [Button(Name = "", Icon = SdfIconType.StopFill)]
+        private void Stop()
+        {
+#if UNITY_EDITOR
+            Editor.AnimationSequenceEditor.Play(_sequence);
+#endif
+
+            _sequence?.Kill();
+            _sequence = null;
+        }
 
 #if UNITY_EDITOR
 
@@ -137,16 +149,6 @@ namespace Bounce.Framework
         private void Complete()
         {
             _sequence?.Complete();
-        }
-
-        [ButtonGroup]
-        [Button(Name = "", Icon = SdfIconType.StopFill)]
-        private void Stop()
-        {
-            Editor.AnimationSequenceEditor.Stop();
-
-            _sequence?.Kill();
-            _sequence = null;
         }
 
         private void BeginDrawListElement(int index)
