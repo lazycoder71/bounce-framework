@@ -7,6 +7,8 @@ namespace Bounce.Framework
     {
         [SerializeField] float _value;
 
+        public override string displayName { get { return $"{(_isSelf ? "CanvasGroup (This)" : _owner)}: DOFade"; } }
+
         protected override Tween GetTween(AnimationSequence animationSequence)
         {
             CanvasGroup owner = _isSelf ? animationSequence.GetComponent<CanvasGroup>() : _owner;

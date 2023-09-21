@@ -5,7 +5,7 @@ namespace Bounce.Framework
 {
     public class AnimationSequenceStepTransformScale : AnimationSequenceStepTransform
     {
-        public override string displayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: Scale To {(_isUseTarget ? (_target == null ? "Null" : _target.name) : _value)}"; } }
+        public override string displayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: DOScale"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {

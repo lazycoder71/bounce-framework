@@ -12,7 +12,7 @@ namespace Bounce.Framework
         [InlineButton("@_isUseTarget = true", Label = "Value")]
         protected Color _value;
 
-        public override string displayName { get { return $"{(_isSelf ? "Graphic (This)" : _owner)}: Color To {(_isUseTarget ? (_target == null ? "Null" : _target.name) : _value)}"; } }
+        public override string displayName { get { return $"{(_isSelf ? "Graphic (This)" : _owner)}: DOColor"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {

@@ -8,7 +8,7 @@ namespace Bounce.Framework
         [SerializeField]
         private bool _snapping = false;
 
-        public override string displayName { get { return $"{(_isSelf ? "RectTransform (This)" : _owner)}: Move To {(_isUseTarget ? (_target == null ? "Null" : _target.name) : _value)}"; } }
+        public override string displayName { get { return $"{(_isSelf ? "RectTransform (This)" : _owner)}: DOAnchorPos3D"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {

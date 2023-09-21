@@ -1,14 +1,29 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Bounce.Framework
 {
-    [ExecuteInEditMode]
     public class AnimationSequence : MonoCached
     {
+        [Serializable, Flags]
+        public enum ActionOnEnable
+        {
+            Construct = 1 << 1,
+            Restart = 1 << 2,
+            Play = 1 << 3,
+            All = Construct | Restart | Play
+        }
+
+        [Serializable, Flags]
+        public enum ActionOnDisable
+        {
+            Kill = 1 << 1,
+        }
+
         [Title("Steps")]
         [ListDrawerSettings(ShowIndexLabels = false, OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement")]
         [SerializeReference] List<AnimationSequenceStep> _steps = new List<AnimationSequenceStep>();
@@ -16,11 +31,12 @@ namespace Bounce.Framework
         [Title("Settings")]
         [SerializeField] bool _isAutoKill = true;
 
-        [SerializeField] bool _playOnEnable = false;
+        [SerializeField] ActionOnEnable _actionOnEnable = ActionOnEnable.Construct;
+        [SerializeField] ActionOnDisable _actionOnDisable;
 
         [MinValue(-1), HorizontalGroup("Loop")]
         [SerializeField] int _loopCount;
-        [ShowIf("@_loopCount<0"), HorizontalGroup("Loop"), LabelWidth(75.0f)]
+        [ShowIf("@_loopCount != 0"), HorizontalGroup("Loop"), LabelWidth(75.0f)]
         [SerializeField] LoopType _loopType;
 
         [SerializeField, HorizontalGroup("Update")]
@@ -34,6 +50,7 @@ namespace Bounce.Framework
         Sequence _sequence;
 
         RectTransform _rectTransform;
+
         Graphic _graphic;
 
         public RectTransform rectTransform
@@ -67,13 +84,20 @@ namespace Bounce.Framework
 
         private void OnEnable()
         {
-            Construct();
+            if (_actionOnEnable.HasFlag(ActionOnEnable.Construct))
+                Construct();
 
-            if (_playOnEnable)
-            {
-                _sequence.Restart();
-                _sequence.Play();
-            }
+            if (_actionOnEnable.HasFlag(ActionOnEnable.Restart))
+                _sequence?.Restart();
+
+            if (_actionOnEnable.HasFlag(ActionOnEnable.Play))
+                _sequence?.Play();
+        }
+
+        private void OnDisable()
+        {
+            if (_actionOnDisable.HasFlag(ActionOnDisable.Kill))
+                _sequence?.Kill();
         }
 
         private void Construct()
@@ -89,55 +113,51 @@ namespace Bounce.Framework
                 _steps[i].AddToSequence(this);
             }
 
-            _sequence.SetLoops(_loopCount, _loopType);
             _sequence.SetAutoKill(_isAutoKill);
-            _sequence.SetUpdate(_updateType, _isIndependentUpdate);
 
-            _sequence.Play();
+            _sequence.SetLoops(_loopCount, _loopType);
+
+            _sequence.SetUpdate(_updateType, _isIndependentUpdate);
         }
 
-        [ButtonGroup]
+#if UNITY_EDITOR
+        [ButtonGroup(Order = -1, ButtonHeight = 25)]
         [Button(Name = "", Icon = SdfIconType.PlayFill)]
         private void Play()
         {
-            Stop();
+            _sequence?.Restart();
 
             Construct();
 
-#if UNITY_EDITOR
-            Editor.AnimationSequenceEditor.Play(_sequence);
-#endif
+            DG.DOTweenEditor.DOTweenEditorPreview.PrepareTweenForPreview(_sequence);
+            DG.DOTweenEditor.DOTweenEditorPreview.Start();
         }
 
         [ButtonGroup]
         [Button(Name = "", Icon = SdfIconType.SkipStartFill)]
-        public void PlayBackward()
+        private void PlayBackward()
         {
             _sequence?.PlayBackwards();
         }
 
         [ButtonGroup]
         [Button(Name = "", Icon = SdfIconType.SkipEndFill)]
-        public void PlayFoward()
+        private void PlayFoward()
         {
             _sequence?.PlayForward();
         }
-		
-		[ButtonGroup]
+
+        [ButtonGroup]
         [Button(Name = "", Icon = SdfIconType.StopFill)]
         private void Stop()
         {
-#if UNITY_EDITOR
-            Editor.AnimationSequenceEditor.Play(_sequence);
-#endif
+            DG.DOTweenEditor.DOTweenEditorPreview.Stop(true);
 
             _sequence?.Kill();
             _sequence = null;
         }
 
-#if UNITY_EDITOR
-
-        [ButtonGroup(Order = -1, ButtonHeight = 25)]
+        [ButtonGroup]
         [Button(Name = "", Icon = SdfIconType.SkipBackwardFill)]
         private void Rewind()
         {

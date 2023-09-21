@@ -8,7 +8,7 @@ namespace Bounce.Framework
         [SerializeField]
         private RotateMode _rotateMode = RotateMode.Fast;
 
-        public override string displayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: Rotate To {(_isUseTarget ? (_target == null ? "Null" : _target.name) : _value)}"; } }
+        public override string displayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: DOLocalRotate"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {
