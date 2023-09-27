@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.SceneManagement;
 
 namespace Bounce.Framework
 {
@@ -46,18 +47,40 @@ namespace Bounce.Framework
         /// Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations.
         /// Learn more: [MonoBehaviour.FixedUpdate](https://docs.unity3d.com/ScriptReference/MonoBehaviour.FixedUpdate.html)
         /// </summary>
-        public event Action OnFixedUpdate;
+        public event Action eventFixedUpdate;
+
+        /// <summary>
+        /// Called when active scene changed.
+        /// </summary>
+        public event Action<Scene, Scene> eventActiveSceneChanged;
 
         void Update() => eventUpdate?.Invoke();
         void LateUpdate() => eventLateUpdate?.Invoke();
-        void FixedUpdate() => OnFixedUpdate?.Invoke();
+        void FixedUpdate() => eventFixedUpdate?.Invoke();
         void OnApplicationPause(bool pauseStatus) => eventApplicationPause?.Invoke(pauseStatus);
         void OnApplicationFocus(bool hasFocus) => eventApplicationFocus?.Invoke(hasFocus);
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            SceneManager.activeSceneChanged += SceneManager_ActiveSceneChanged;
+        }
+
+        protected override void OnDestroy()
+        {
+            SceneManager.activeSceneChanged += SceneManager_ActiveSceneChanged;
+        }
 
         protected override void OnApplicationQuit()
         {
             base.OnApplicationQuit();
             eventApplicationQuit?.Invoke();
+        }
+
+        private void SceneManager_ActiveSceneChanged(Scene scenePrevious, Scene sceneCurrent)
+        {
+            eventActiveSceneChanged?.Invoke(scenePrevious, sceneCurrent);
         }
     }
 }
