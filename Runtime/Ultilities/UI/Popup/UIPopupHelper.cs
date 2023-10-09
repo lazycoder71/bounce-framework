@@ -7,6 +7,8 @@ namespace Bounce.Framework
     {
         public static Transform popupRoot;
 
+        public static event Action<UIPopupBehaviour> eventPopupCreated;
+
         public static T Create<T>(GameObject prefab) where T : UIPopupBehaviour
         {
             if (popupRoot == null)
@@ -14,6 +16,8 @@ namespace Bounce.Framework
 
             T popup = prefab.Create(popupRoot, false).GetComponent<T>();
             popup.transform.SetAsLastSibling();
+
+            eventPopupCreated?.Invoke(popup);
 
             return popup;
         }
