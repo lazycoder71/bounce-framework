@@ -73,16 +73,29 @@ namespace Bounce.Framework
             return newArray;
         }
 
-        public static T GetLoop<T>(this T[] array, int index)
-        {
-            return array[index % array.Length];
-        }
-
         public static void SwapElements<T>(this T[] data, int index0, int index1)
         {
             T t = data[index0];
             data[index0] = data[index1];
             data[index1] = t;
+        }
+
+        public static T GetLoop<T>(this T[] array, int index)
+        {
+            return array[array.GetLoopIndex(index)];
+        }
+
+        public static void SetLoop<T>(this T[] array, int index, T item)
+        {
+            array[array.GetLoopIndex(index)] = item;
+        }
+
+        public static int GetLoopIndex<T>(this T[] array, int index)
+        {
+            if (index < 0)
+                return array.Length - (Mathf.Abs(index) % array.Length);
+            else
+                return index % array.Length;
         }
     }
 }

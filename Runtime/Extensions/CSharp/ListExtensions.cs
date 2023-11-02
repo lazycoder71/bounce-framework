@@ -91,7 +91,20 @@ namespace Bounce.Framework
 
         public static T GetLoop<T>(this List<T> list, int index)
         {
-            return list[index % list.Count];
+            return list[list.GetLoopIndex(index)];
+        }
+
+        public static void SetLoop<T>(this List<T> list, int index, T item)
+        {
+            list[list.GetLoopIndex(index)] = item;
+        }
+
+        public static int GetLoopIndex<T>(this List<T> list, int index)
+        {
+            if (index < 0)
+                return list.Count - (Mathf.Abs(index) % list.Count);
+            else
+                return index % list.Count;
         }
     }
 }
