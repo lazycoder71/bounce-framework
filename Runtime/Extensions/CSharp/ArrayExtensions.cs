@@ -93,7 +93,7 @@ namespace Bounce.Framework
         public static int GetLoopIndex<T>(this T[] array, int index)
         {
             if (index < 0)
-                return array.Length - (Mathf.Abs(index) % array.Length);
+                return (array.Length - (Mathf.Abs(index) % array.Length)) % array.Length;
             else
                 return index % array.Length;
         }
