@@ -120,19 +120,32 @@ namespace Bounce.Framework
             _sequence.SetUpdate(_updateType, _isIndependentUpdate);
         }
 
-#if UNITY_EDITOR
         [ButtonGroup(Order = -1, ButtonHeight = 25)]
         [Button(Name = "", Icon = SdfIconType.PlayFill)]
-        private void Play()
+        public void Play()
         {
-            _sequence?.Restart();
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                _sequence?.Restart();
 
-            Construct();
+                Construct();
 
-            DG.DOTweenEditor.DOTweenEditorPreview.PrepareTweenForPreview(_sequence);
-            DG.DOTweenEditor.DOTweenEditorPreview.Start();
+                DG.DOTweenEditor.DOTweenEditorPreview.PrepareTweenForPreview(_sequence);
+                DG.DOTweenEditor.DOTweenEditorPreview.Start();
+
+                return;
+            }
+#endif
+            _sequence?.Play();
         }
 
+        public void Restart()
+        {
+            _sequence?.Restart();
+        }
+
+#if UNITY_EDITOR
         [ButtonGroup]
         [Button(Name = "", Icon = SdfIconType.SkipStartFill)]
         private void PlayBackward()
