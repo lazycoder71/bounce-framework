@@ -44,16 +44,12 @@ namespace Bounce.Framework.Editor
         public void OnGUI()
         {
             //Search bar
-            GUILayout.BeginHorizontal(GUI.skin.FindStyle("Toolbar"));
-            GUI.SetNextControlName("SearchBar");
-            _strSearch = GUILayout.TextField(_strSearch, GUI.skin.FindStyle("ToolbarSeachTextField"));
+            GUILayout.BeginHorizontal(GUI.skin.FindStyle("Toolbar") ?? GUI.skin.box);
 
-            if (GUILayout.Button("", GUI.skin.FindStyle("ToolbarSeachCancelButton")))
-            {
-                // Remove focus if cleared
-                _strSearch = "";
-                GUI.FocusControl(null);
-            }
+            GUI.SetNextControlName("SearchBar");
+
+            _strSearch = GUILayout.TextField(_strSearch, GUI.skin.FindStyle("ToolbarSeachTextField") ?? GUI.skin.textField);
+
             GUILayout.EndHorizontal();
 
             if (_types == null)
