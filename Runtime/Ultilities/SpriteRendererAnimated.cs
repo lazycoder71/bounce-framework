@@ -1,23 +1,29 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Bounce.Framework
 {
     public class SpriteRendererAnimated : MonoCached
     {
         [Header("Config")]
-        [SerializeField] Sprite[] _sprFrames;
+        [FormerlySerializedAs("_sprFrames")]
+        [SerializeField] Sprite[] _frames;
+
         [Min(1)]
         [SerializeField] int _fps = 30;
+
         [SerializeField] int _loopCount = 0;
+
         [ShowIf("@_loopCount < 0")]
         [SerializeField] LoopType _loopType;
 
         SpriteRenderer _spriteRenderer;
+
         Sequence _sequence;
 
-        public Sequence Sequence
+        public Sequence sequence
         {
             get
             {
@@ -59,11 +65,11 @@ namespace Bounce.Framework
             if (_sequence != null)
                 return;
 
-            float delayBetween = 1f / _fps;
+            float delayBetween = 1.0f / _fps;
 
             _sequence = DOTween.Sequence();
 
-            for (int i = 0; i < _sprFrames.Length; i++)
+            for (int i = 0; i < _frames.Length; i++)
             {
                 int frameIndex = i;
 
@@ -77,7 +83,7 @@ namespace Bounce.Framework
 
         void SetFrame(int frameIndex)
         {
-            _spriteRenderer.sprite = _sprFrames[frameIndex];
+            _spriteRenderer.sprite = _frames[frameIndex];
         }
     }
 }

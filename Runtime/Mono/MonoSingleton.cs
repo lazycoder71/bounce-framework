@@ -24,7 +24,7 @@ namespace Bounce.Framework
         {
             get
             {
-                if (s_applicationIsQuitting)
+                if (s_applicationIsQuitting || s_isDestroyed)
                 {
                     BDebug.LogError(
                         $"{typeof(T)} [MonoSingleton] is already destroyed. " +
@@ -52,6 +52,12 @@ namespace Bounce.Framework
         /// </summary>
         public static void Instantiate()
         {
+            if (hasInstance)
+            {
+                BDebug.LogWarning($"You are trying to Instantiate {typeof(T).FullName}, but it already has an Instance. Please use Instance property instead.");
+                return;
+            }
+
             var name = typeof(T).FullName;
             s_instance = new GameObject(name).AddComponent<T>();
         }
@@ -82,11 +88,7 @@ namespace Bounce.Framework
                 s_isDestroyed = false;
 
                 if (_dontDestroyOnLoad)
-                {
                     DontDestroyOnLoad(gameObjectCached);
-
-                    transformCached.SetParent(SingletonService.parent);
-                }
             }
         }
 

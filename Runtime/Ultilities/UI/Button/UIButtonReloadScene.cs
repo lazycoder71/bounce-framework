@@ -1,5 +1,3 @@
-using UnityEngine.SceneManagement;
-
 namespace Bounce.Framework
 {
     public class UIButtonReloadScene : UIButtonBase

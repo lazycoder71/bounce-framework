@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using UnityEngine;
 
 namespace Bounce.Framework
 {
     public class UIButtonOpenPopup : UIButtonBase
     {
+        [Title("Config")]
         [SerializeField] GameObject _popup;
 
         public event Action<UIPopupBehaviour> eventSpawnPopup;
