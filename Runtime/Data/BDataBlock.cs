@@ -25,8 +25,8 @@ namespace Bounce.Framework
 
         protected virtual void Init()
         {
-            MonoCallback.eventApplicationPause += MonoCallback_ApplicationOnPause;
-            MonoCallback.eventApplicationQuit += MonoCallback_ApplicationOnQuit;
+            MonoCallback.instance.eventApplicationPause += MonoCallback_ApplicationOnPause;
+            MonoCallback.instance.eventApplicationQuit += MonoCallback_ApplicationOnQuit;
         }
 
         protected virtual void OnSaved()

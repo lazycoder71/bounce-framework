@@ -4,7 +4,7 @@ namespace Bounce.Framework
     {
         public override void Init()
         {
-            MonoCallback.eventUpdate += Update;
+            MonoCallback.instance.eventUpdate += Update;
         }
     }
 }
