@@ -16,43 +16,43 @@ namespace Bounce.Framework
         /// Update is called every frame.
         /// Learn more: [MonoBehaviour.Update](https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html)
         /// </summary>
-        public static event Action eventUpdate;
+        public event Action eventUpdate;
 
         /// <summary>
         /// LateUpdate is called after all Update functions have been called. This is useful to order script execution.
         /// For example a follow camera should always be implemented in LateUpdate because it tracks objects that might have moved inside Update.
         /// Learn more: [MonoBehaviour.LateUpdate](https://docs.unity3d.com/ScriptReference/MonoBehaviour.LateUpdate.html)
         /// </summary>
-        public static event Action eventLateUpdate;
+        public event Action eventLateUpdate;
 
         /// <summary>
         /// In the editor this is called when the user stops playmode.
         /// Learn more: [MonoBehaviour.OnApplicationQuit](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnApplicationQuit.html)
         /// </summary>
-        public static event Action eventApplicationQuit;
+        public event Action eventApplicationQuit;
 
         /// <summary>
         /// Sent to all GameObjects when the application pauses.
         /// Learn more: [MonoBehaviour.OnApplicationPause](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnApplicationPause.html)
         /// </summary>
-        public static event Action<bool> eventApplicationPause;
+        public event Action<bool> eventApplicationPause;
 
         /// <summary>
         /// Sent to all GameObjects when the player gets or loses focus.
         /// Learn more: [MonoBehaviour.OnApplicationFocus](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnApplicationFocus.html)
         /// </summary>
-        public static event Action<bool> eventApplicationFocus;
+        public event Action<bool> eventApplicationFocus;
 
         /// <summary>
         /// Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations.
         /// Learn more: [MonoBehaviour.FixedUpdate](https://docs.unity3d.com/ScriptReference/MonoBehaviour.FixedUpdate.html)
         /// </summary>
-        public static event Action eventFixedUpdate;
+        public event Action eventFixedUpdate;
 
         /// <summary>
         /// Called when active scene changed.
         /// </summary>
-        public static event Action<Scene, Scene> eventActiveSceneChanged;
+        public event Action<Scene, Scene> eventActiveSceneChanged;
 
         void Update() => eventUpdate?.Invoke();
         void LateUpdate() => eventLateUpdate?.Invoke();
