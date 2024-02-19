@@ -78,8 +78,21 @@ namespace Bounce.Framework
 
         protected virtual void Awake()
         {
-            if (_dontDestroyOnLoad)
-                DontDestroyOnLoad(gameObjectCached);
+            if (s_instance == null)
+            {
+                s_isDestroyed = false;
+
+                s_instance = this as T;
+
+                if (_dontDestroyOnLoad)
+                    DontDestroyOnLoad(gameObjectCached);
+            }
+            else if (s_instance != this)
+            {
+                BDebug.Log($"MonoSingleton of {typeof(T).FullName} is already exist, this one will be destroyed");
+
+                Destroy(gameObjectCached);
+            }
         }
 
         /// <summary>
