@@ -7,7 +7,7 @@ namespace Bounce.Framework
     /// Can be used with classes extended from a MonoBehaviour.
     /// Once instance is found or created, game object will be marked as DontDestroyOnLoad.
     /// </summary>
-    public abstract class MonoSingleton<T> : MonoCached where T : MonoCached
+    public abstract class MonoSingleton<T> : MonoCached where T : MonoBehaviour
     {
         protected virtual bool _dontDestroyOnLoad { get { return true; } }
 
@@ -44,25 +44,6 @@ namespace Bounce.Framework
         }
 
         /// <summary>
-        /// Methods will create new object Instantiate
-        /// Normally method is called automatically when you referring to and Instance getter
-        /// for a first time.
-        /// But it may be useful if you want manually control when the instance is created,
-        /// even if you do not this specific instance at the moment
-        /// </summary>
-        public static void Instantiate()
-        {
-            if (hasInstance)
-            {
-                BDebug.LogWarning($"You are trying to Instantiate {typeof(T).FullName}, but it already has an Instance. Please use Instance property instead.");
-                return;
-            }
-
-            var name = typeof(T).FullName;
-            s_instance = new GameObject(name).AddComponent<T>();
-        }
-
-        /// <summary>
         /// Returns `true` if Singleton Instance exists.
         /// </summary>
         public static bool hasInstance => s_instance != null;
@@ -74,22 +55,31 @@ namespace Bounce.Framework
         /// </summary>
         public static bool isDestroyed => s_isDestroyed;
 
+        /// <summary>
+        /// Methods will create new object Instantiate
+        /// Normally method is called automatically when you referring to and Instance getter
+        /// for a first time.
+        /// But it may be useful if you want manually control when the instance is created,
+        /// even if you do not this specific instance at the moment
+        /// </summary>
+        private static void Instantiate()
+        {
+            if (hasInstance)
+            {
+                BDebug.LogWarning($"You are trying to Instantiate {typeof(T).FullName}, but it already has an Instance. Please use Instance property instead.");
+                return;
+            }
+
+            var name = typeof(T).FullName;
+            s_instance = new GameObject(name).AddComponent<T>();
+        }
+
         #region MonoBehaviour
 
         protected virtual void Awake()
         {
-            if (instance != null && instance != this)
-            {
-                Destroy(gameObjectCached);
-            }
-            else
-            {
-                s_instance = this as T;
-                s_isDestroyed = false;
-
-                if (_dontDestroyOnLoad)
-                    DontDestroyOnLoad(gameObjectCached);
-            }
+            if (_dontDestroyOnLoad)
+                DontDestroyOnLoad(gameObjectCached);
         }
 
         /// <summary>
@@ -103,9 +93,10 @@ namespace Bounce.Framework
         protected virtual void OnDestroy()
         {
             if (s_instance == this)
+            {
                 s_instance = null;
-
-            s_isDestroyed = true;
+                s_isDestroyed = true;
+            }
         }
 
         protected virtual void OnApplicationQuit()
