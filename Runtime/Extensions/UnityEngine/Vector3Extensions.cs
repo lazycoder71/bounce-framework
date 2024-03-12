@@ -12,5 +12,20 @@ namespace Bounce.Framework
 
             return b;
         }
+
+        public static Vector3Int RoundToInt(this Vector3 vector)
+        {
+            return new Vector3Int(Mathf.RoundToInt(vector.x), Mathf.RoundToInt(vector.y), Mathf.RoundToInt(vector.z));
+        }
+
+        public static Vector3Int FloorToInt(this Vector3 vector)
+        {
+            return new Vector3Int(Mathf.FloorToInt(vector.x), Mathf.FloorToInt(vector.y), Mathf.FloorToInt(vector.z));
+        }
+
+        public static Vector3Int CeilToInt(this Vector3 vector)
+        {
+            return new Vector3Int(Mathf.CeilToInt(vector.x), Mathf.CeilToInt(vector.y), Mathf.CeilToInt(vector.z));
+        }
     }
 }
